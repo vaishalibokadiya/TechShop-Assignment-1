@@ -1,3 +1,7 @@
+import sys
+sys.path.insert(0,'D:/Vaishali Bokadiya/Python/TechShop/UTIL')
+from Util import DBConnUtil,DBPropertyUtil
+
 class Customer:
     def __init__(self, customerId, firstName, lastName, email, phone, address):
         self.customerId = customerId
@@ -43,6 +47,59 @@ class Customer:
     def get_address(self):
         return self.address
     
+    def calculate_total_orders():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            customerId = int(input("Enter customer Id: "))
+            try:
+                mycursor.execute(f"SELECT COUNT(*) FROM Order WHERE customerId={customerId};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                result=mycursor.fetchall()
+                for res in result:
+                    print(res)
+                print("Data fetched successfully.")
+
+    def get_customer_details():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            customerId = int(input("Enter customer Id: "))
+            try:
+                mycursor.execute(f"SELECT * FROM Customer WHERE customerId = {customerId};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                result=mycursor.fetchall()
+                for res in result:
+                    print(res)
+                print("Data fetched successfully.")
+
+    def update_customer_info():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            customerId = int(input("Enter ID of the customer you want to update: "))
+            firstName = input("Enter first name: ")
+            lastName = input("Enter last name: ")
+            email = input("Enter email: ")
+            phone = input("Enter phone number: ")
+            address = input("Enter address: ")
+            try: 
+                mycursor.execute(f"UPDATE Customer SET firstName='{firstName}',lastName='{lastName}',email='{email}',phone='{phone}',address='{address}' WHERE customerId={customerId};")
+            except:
+                print("Failed to update customer from the database.")
+            else:
+                print("Customer updated successfully.")
+
 
 class Product:
     def __init__(self, productId, productName, description, price):
@@ -74,7 +131,41 @@ class Product:
 
     def get_price(self):
         return self.price
+    
+    def get_product_details():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            productId = int(input("Enter product Id: "))
+            try:
+                mycursor.execute(f"SELECT * FROM Product WHERE productId = {productId};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                result=mycursor.fetchall()
+                for res in result:
+                    print(res)
+                print("Data fetched successfully.")
 
+    def update_product_info():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            productId = int(input("Enter ID of the product you want to update: "))
+            name = input("Enter product name: ")
+            description = input("Enter product description: ")
+            price = float(input("Enter price: "))
+            try: 
+                mycursor.execute(f"UPDATE Product SET name='{name}', description='{description}', price='{price}' WHERE productId={productId};")
+            except:
+                print("Failed to update product in the database.")
+            else:
+                print("Product updated successfully.")
+    
     
 class Order:
     def __init__(self, orderId, customer, orderDate, totalAmount):
@@ -107,6 +198,72 @@ class Order:
     def get_totalAmount(self):
         return self.totalAmount
 
+    def calculate_total_amount():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            orderId = int(input("Enter order Id: "))
+            try:
+                mycursor.execute(f"SELECT totalAmount FROM Order WHERE orderId = {orderId};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                result=mycursor.fetchall()
+                for res in result:
+                    print(res)
+                print("Data fetched successfully.")
+
+    def get_order_details():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            orderId = int(input("Enter order Id: "))
+            try:
+                mycursor.execute(f"SELECT * FROM Order WHERE orderId = {orderId};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                result=mycursor.fetchall()
+                for res in result:
+                    print(res)
+                print("Data fetched successfully.")
+
+    def update_order_status():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            orderId = int(input("Enter order Id: "))
+            status= input("Enter updated order status")
+            try:
+                mycursor.execute(f"UPDATE Order SET status='{status}' WHERE orderId = {orderId};")
+            except:
+                print("Failed to update status in the database.")
+            else:
+                result=mycursor.fetchall()
+                for res in result:
+                    print(res)
+                print("Status updated successfully.")
+
+    def cancel_order():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            orderId = int(input("Enter order Id: "))
+            try:
+                mycursor.execute(f"DELETE FROM Order WHERE orderId = {orderId};")
+            except:
+                print("Failed to delete data from the database.")
+            else:
+                print("Data deleted successfully.")
+
     
 class OrderDetails:
     def __init__(self, orderDetailsId, order, product, quantity):
@@ -138,6 +295,40 @@ class OrderDetails:
 
     def get_quantity(self):
         return self.quantity
+    
+    def get_order_details_info():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            print("Error in connection")
+        else:
+            orderDetailsId = int(input("Enter order Id: "))
+            try:
+                mycursor.execute(f"SELECT * FROM OrderDetails WHERE orderDetailsId = {orderDetailsId};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                print("Data fetched successfully.")
+
+    def update_quantity():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            print("Error in connection")
+        else:
+            orderDetailsId = int(input("Enter order details Id: "))
+            quantity= input("Enter updated quantity")
+            try:
+                mycursor.execute(f"UPDATE OrderDetails SET quantity={quantity} WHERE orderDetailsId = {orderDetailsId};")
+            except:
+                print("Failed to update quantity in the database.")
+            else:
+                result=mycursor.fetchall()
+                for res in result:
+                    print(res)
+                print("quantity updated successfully.")
+
+   
 
 
 class Inventory:
@@ -170,5 +361,119 @@ class Inventory:
 
     def get_lastStockUpdate(self):
         return self.lastStockUpdate
+    
+    def get_product():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            productId = int(input("Enter product Id: "))
+            try:
+                mycursor.execute(f"SELECT * FROM Product WHERE productId = {productId};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                result=mycursor.fetchall()
+                for res in result:
+                    print(res)
+                print("Data fetched successfully.")
 
-        
+    def get_quantity_in_stock():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            inventoryId = int(input("Enter inventory Id: "))
+            try:
+                mycursor.execute(f"SELECT quantityInStock FROM Inventory WHERE inventoryId = {inventoryId};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                result=mycursor.fetchall()
+                for res in result:
+                    print(res)
+                print("Data fetched successfully.")
+
+    def update_stock_quantity():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            inventoryId = int(input("Enter inventory Id: "))
+            quantity= int(input("Enter updated quantity"))
+            try:
+                mycursor.execute(f"UPDATE Inventory SET quantityInStock={quantity} WHERE inventoryId={inventoryId};")
+            except:
+                print("Failed to update quantity in the database.")
+            else:
+                print("Quantity updated successfully.")
+
+    def is_product_available():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            productId=int(input("Enter product id"))
+            threshold=int(input("Enter quantity"))
+            try:
+                mycursor.execute(f"SELECT * FROM Inventory WHERE productId={productId} AND quantityInStock>={threshold};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                rows=mycursor.fetchall()
+                for row in rows:
+                    print(row)
+                print("Data fetched successfully.")
+
+    def list_low_stock_products():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            threshold=int(input("Enter threshold for low quantity"))
+            try:
+                mycursor.execute(f"SELECT product, quantityInStock FROM Inventory WHERE quantityInStock<{threshold};")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                rows=mycursor.fetchall()
+                for row in rows:
+                    print(row)
+                print("Data fetched successfully.")
+
+    def list_out_of_stock_products():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            try:
+                mycursor.execute(f"SELECT product, quantityInStock FROM Inventory WHERE quantityInStock=0;")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                rows=mycursor.fetchall()
+                for row in rows:
+                    print(row)
+                print("Data fetched successfully.")
+
+    def list_all_products():
+        try:
+            [mycursor,mydb]=DBConnUtil.get_connection_object(DBPropertyUtil.get_connection_string())
+        except:
+            return "Error in connection"
+        else:
+            try:
+                mycursor.execute(f"SELECT product, quantityInStock FROM Inventory;")
+            except:
+                print("Failed to fetch data from the database.")
+            else:
+                rows=mycursor.fetchall()
+                for row in rows:
+                    print(row)
+                print("Data fetched successfully.")
