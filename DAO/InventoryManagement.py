@@ -16,8 +16,10 @@ class InventoryManagement:
                 mycursor.execute(f"INSERT INTO Product (name, description, price) VALUES ('{name}','{description}',{price});")
             except:
                 print("Failed to add product in the database.")
+                return False
             else:
                 print("Product added successfully.")
+                return False
 
     def updateQuantity():
         try:

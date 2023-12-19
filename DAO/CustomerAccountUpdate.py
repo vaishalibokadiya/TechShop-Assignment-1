@@ -19,8 +19,10 @@ class CustomerAccountUpdate:
                 mycursor.execute(f"UPDATE Customer SET firstName='{firstName}', lastName='{lastName}', email='{email}', phone='{phone}', address='{address}' WHERE customerId={customerId};")
             except:
                 print("Failed to update customer.")
+                return False
             else:
                 print("Customer Updated successfully.")
+                return True
 
 
 

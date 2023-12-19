@@ -1,6 +1,8 @@
 import sys
 sys.path.insert(0,'D:/Vaishali Bokadiya/Python/TechShop/UTIL')
 
+from Util import DBPropertyUtil, DBConnUtil
+
 class Inventory:
     def __init__(self, inventoryId, product, quantityInStock, lastStockUpdate):
         self.inventoryId = inventoryId
